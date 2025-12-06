@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anju - Profile Card (Windows 11 Style)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+
+    <img id="video-background" class="background-image" src="pic/background.jpg" alt="Background Image">
+
+    <nav class="discord-navbar">
+        <div class="nav-left-items">
+           <a href="index.html" class="nav-item active">Home</a>
+            <a href="aboutme.html" class="nav-item">About</a>
+            <a href="education.html" class="nav-item">Education</a>
+            <a href="project.html" class="nav-item">Projects</a>
+        </div>
+    </nav>
+    <div class="profile-card">
+        
+        <div class="window-controls">
+            <div class="control-button minimize" title="ย่อหน้าต่าง">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M5.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
+                </svg>
+            </div>
+
+            <div class="control-button maximize" title="ขยายหน้าต่าง">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M3.5 10a.5.5 0 0 1-.5-.5V3H10.5a.5.5 0 0 1 0 1H4v5.5a.5.5 0 0 1-.5.5"/>
+                </svg>
+            </div>
+
+            <div class="control-button close" title="ปิดหน้าต่าง">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="avatar-area-with-icons">
+            <a href="#" class="nav-icon-item custom-image-placeholder">
+                <img src="pic/cybericon.png" alt="Avatar" class="avatar-img">
+                </a>
+            
+            <div class="separator-dots-in-card">
+                <span class="dot pulse-animation" style="animation-delay: 0s;"></span>
+                <span class="dot pulse-animation" style="animation-delay: 0.2s;"></span>
+                <span class="dot pulse-animation" style="animation-delay: 0.4s;"></span>
+            </div>
+            
+            <a href="#" class="nav-icon-item profile-placeholder-main">
+                 <img src="pic/avatar.jpg" alt="Avatar" class="avatar-img">
+            </a>
+        </div>
+        
+        <a href="aboutme.html" class="action-button">GO</a>
+
+        <h1 class="username"> Building a Safe Tomorrow with Code and Cyber Defense</h1>
+        <H2>Hello! I'm Korakod. I love the combination of beautiful website design and cyber security.
+
+Writing code to create an attractive website is fun, but building a defense shield to protect data and systems from threats is the real challenge! Therefore, I am always committed to improving my skills in design and in creating secure and reliable systems."</H2>
+        <p class="status-message"></p>
+        
+        <div class="social-links">
+            <a href="#" onclick="copyAndNotify('anju0233', 'discord-btn'); return false;" class="social-icon" id="discord-btn">
+                <i class="fab fa-discord"></i>
+            </a>
+            <a href="https://github.com/024342730zass" target="_blank" class="social-icon">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.instagram.com/kvrkvn_t/" target="_blank" class="social-icon">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://line.me/ti/p/WjHAwvd0mv" target="_blank" class="social-icon">
+                <i class="fab fa-line"></i>
+            </a>
+        </div>
+    </div>
+
+<script>
+    // --- ฟังก์ชันคัดลอก (Copy and Notify) ---
+    function copyAndNotify(text, buttonId) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        
+        textarea.style.position = 'fixed';
+        textarea.style.top = 0;
+        textarea.style.left = 0;
+
+        document.body.appendChild(textarea);
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Success
+            }).catch(err => {
+                textarea.select();
+                document.execCommand('copy');
+            });
+        } else {
+            textarea.select();
+            document.execCommand('copy');
+        }
+
+        document.body.removeChild(textarea);
+        
+        const button = document.getElementById(buttonId);
+        const existingTooltip = button.querySelector('.copy-tooltip');
+        if (existingTooltip) {
+            existingTooltip.remove();
+        }
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'copy-tooltip';
+        tooltip.textContent = 'Copied! ' + text;
+        
+        button.appendChild(tooltip);
+
+        setTimeout(() => {
+            if(tooltip.parentNode === button) {
+                tooltip.remove();
+            }
+        }, 1500);
+    }
+</script>
+</body>
+</html>

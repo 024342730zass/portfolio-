@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - My Portfolio</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ==================================================== */
+        /* 0. DISCORD COLOR PALETTE & GLOBAL VARS */
+        /* ==================================================== */
+        :root {
+            --discord-bg-primary: #36393f; 
+            --discord-bg-secondary: #2f3136; 
+            --discord-bg-tertiary: #202225; 
+            --discord-blur-bg: rgba(47, 49, 54, 0.75);
+            --discord-text-normal: #dcddde;
+            --discord-text-muted: #b9bbbe; 
+            --brand-color-blurple: #5865f2; 
+            --brand-color-green: #3ba55d; 
+            --brand-color-red: #f04747;
+        }
+
+        /* ---------------------------------------------------- */
+        /* 0. ANIMATIONS KEYFRAMES ⭐ เพิ่มส่วนนี้ ⭐ */
+        /* ---------------------------------------------------- */
+        @keyframes fadeInSlideDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @keyframes fadeInPopUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ---------------------------------------------------- */
+        /* 1. Global Setup & Background (แก้ไข Padding) */
+        /* ---------------------------------------------------- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0; 
+            transition: color 0.2s ease, background-color 0.2s ease, transform 0.1s ease, box-shadow 0.3s ease; 
+        }
+        body, html {
+            min-height: 100vh;
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+            color: var(--discord-text-normal);
+            overflow-x: hidden;
+        }
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.75; 
+            filter: brightness(0.7); 
+        }
+        
+        /* เพิ่ม Wrapper เพื่อให้เนื้อหาหลักไม่ทับ Navbar */
+        .window-wrapper {
+            min-height: 100vh;
+            padding-top: 120px; /* ปรับให้มีพื้นที่ด้านบนมากขึ้นเพื่อให้เห็น Navbar ชัดเจน */
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ---------------------------------------------------- */
+        /* 2. Navigation Bar (discord-navbar) (เพิ่ม Active State) */
+        /* ---------------------------------------------------- */
+        .discord-navbar {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            display: flex;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: var(--discord-blur-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            
+            /* ⭐ ใช้ Animation สำหรับ Navbar ⭐ */
+            opacity: 0; 
+            animation: fadeInSlideDown 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+        }
+
+        .nav-item {
+            color: var(--discord-text-muted);
+            font-weight: 500;
+            padding: 10px 18px;
+            font-size: 1.1rem;
+            margin: 0 2px;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--discord-bg-secondary);
+            color: var(--discord-text-normal);
+        }
+
+        .nav-item.active { 
+            background-color: var(--discord-bg-primary); 
+            color: var(--discord-text-normal);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ==================================================== */
+        /* 3. PROJECTS SECTION STYLES (ปรับปรุงเพื่อรองรับ Block) */
+        /* ==================================================== */
+
+        #projects {
+            padding: 50px 0 100px; /* ปรับลด padding ด้านบนเนื่องจากมี window-wrapper แล้ว */
+            min-height: 100vh;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px; 
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            display: inline-block; 
+            margin: 0;
+            padding: 0;
+            color: var(--brand-color-blurple); 
+        }
+        
+        .section-header-block {
+            display: inline-block; 
+            padding: 10px 30px; 
+            border-radius: 18px; 
+            
+            /* Mica/Blur Effect */
+            background-color: var(--discord-blur-bg); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-header-block h2 {
+            color: var(--brand-color-blurple); 
+            text-shadow: 0 0 15px rgba(88, 101, 242, 0.7); 
+        }
+
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; 
+            padding: 20px 0;
+        }
+
+        .project-card {
+            background-color: var(--discord-bg-tertiary); 
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--discord-bg-primary);
+            
+            /* ⭐ ใช้ Animation สำหรับ Project Card ⭐ */
+            opacity: 0;
+            animation: fadeInPopUp 0.6s ease-out forwards;
+        }
+
+        /* ⭐ กำหนดหน่วงเวลา (Delay) ให้แต่ละ Card ปรากฏตามลำดับ ⭐ */
+        .projects-grid .project-card:nth-child(1) { animation-delay: 0.4s; }
+        .projects-grid .project-card:nth-child(2) { animation-delay: 0.5s; }
+        .projects-grid .project-card:nth-child(3) { animation-delay: 0.6s; }
+
+
+        .project-card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 20px rgba(88, 101, 242, 0.3);
+        }
+
+        .project-image-container { width: 100%; height: 200px; overflow: hidden; background-color: var(--discord-bg-primary); display: flex; align-items: center; justify-content: center; }
+        .project-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .project-card:hover .project-image-container img { transform: scale(1.05); }
+        .project-content { padding: 20px; }
+        .project-content h3 { font-size: 1.5rem; color: var(--brand-color-blurple); margin-bottom: 8px; border-bottom: 2px solid var(--discord-bg-primary); padding-bottom: 5px; }
+        .project-content p { color: var(--discord-text-muted); margin-bottom: 15px; line-height: 1.5; }
+        .project-tags { margin-bottom: 15px; }
+        .tag { display: inline-block; background-color: var(--discord-bg-primary); color: var(--discord-text-normal); font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; margin-right: 8px; margin-bottom: 5px; }
+        .tag.main { background-color: var(--brand-color-blurple); color: #ffffff; font-weight: 600; }
+        .project-links a { color: var(--discord-text-normal); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 6px; margin-right: 10px; transition: background-color 0.2s, color 0.2s; }
+        .project-links .link-button { background-color: var(--brand-color-blurple); color: #ffffff; }
+        .project-links .link-button:hover { background-color: #6d78ef; }
+        .project-links .link-github { background-color: var(--discord-bg-primary); color: var(--discord-text-normal); }
+        .project-links .link-github:hover { background-color: #55585d; }
+
+
+        /* ---------------------------------------------------- */
+        /* 4. Responsive Design */
+        /* ---------------------------------------------------- */
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr; 
+            }
+            .section-header-block h2 {
+                font-size: 2rem;
+            }
+            .section-header-block {
+                 padding: 8px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <img id="video-background" class="background-image" src="pic/background.jpg" alt="Background Image">
+    
+    <div class="window-wrapper">
+
+        <nav class="discord-navbar">
+            <div class="nav-left-items">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="aboutme.html" class="nav-item">About</a>
+                <a href="education.html" class="nav-item">Education</a>
+                <a href="project.html" class="nav-item active">Projects</a>
+            </div>
+        </nav>
+        
+        <section id="projects">
+            <div class="container">
+                <div class="section-header">
+                    
+                    <div class="section-header-block">
+                        <h2>My Projects ✨</h2>
+                    </div>
+                    
+                </div>
+
+                <div class="projects-grid">
+                    
+                    <div class="project-card">
+                        <div class="project-image-container">
+                            <img src="pic/book.JPG" alt="E-commerce Website">
+                        </div>
+                        <div class="project-content">
+                            <h3>Bookstore Platform</h3>
+                            <div class="project-tags">
+                                <span class="tag main">Web App</span>
+                                <span class="tag">PHP</span>
+                                <span class="tag">MySQL</span>
+                            </div>
+                            <p>
+                                ระบบซื้อขายสินค้า พัฒนาด้วย PHP/MySQL มีระบบตะกร้าสินค้า, การจัดการสต็อก, และระบบสมาชิก.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://comsci-rmutp.com/2568gp22/craftebook/login.php" class="link-button" target="_blank"><i class="fas fa-desktop"></i> View Demo</a>
+                                <a href="#" class="link-github" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-image-container">
+                               <img src="pic/figma.JPG" alt="Data Dashboard">
+                        </div>
+                        <div class="project-content">
+                            <h3>Figma app design</h3>
+                            <div class="project-tags">
+                                <span class="tag main">Figma</span>
+                                <span class="tag">Design</span>
+                                
+                            </div>
+                            <p>
+                                ออกแบบแอพพลิเคชั่นด้วย Figma ที่มีชื่อว่า Stome ซื้อเกม เเรงบันดาลใจจาก Steam
+                            </p>
+                            <div class="project-links">
+                                <a href="https://www.figma.com/proto/2hP46HLYLaamcWed2uWsfV/%E0%B9%80%E0%B8%82%E0%B8%B5%E0%B8%A2%E0%B8%A7-%E0%B8%95%E0%B9%89%E0%B8%99%E0%B8%89%E0%B8%9A%E0%B8%B1%E0%B8%9A?node-id=2-6&p=f&t=0wnGhPuN5B12zyJg-0&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A6
+                                " class="link-button" target="_blank"><i class="fas fa-desktop"></i> View Demo</a>
+
+                                <a href="https://www.figma.com/design/2hP46HLYLaamcWed2uWsfV/%E0%B9%80%E0%B8%82%E0%B8%B5%E0%B8%A2%E0%B8%A7-%E0%B8%95%E0%B9%89%E0%B8%99%E0%B8%89%E0%B8%9A%E0%B8%B1%E0%B8%9A?node-id=0-1&t=0wnGhPuN5B12zyJg-1
+                                " class="link-github" target="_blank"><i class="fab fa-figma"></i> Figma</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-image-container">
+                               <img src="pic/game1.JPG" alt="Mobile App">
+                        </div>
+                        <div class="project-content">
+                            <h3>
+Dungeon Saviour</h3>
+                            <div class="project-tags">
+                                <span class="tag main">Game</span>
+                                <span class="tag">Java script</script></span>
+                                <span class="tag">Netbeans</span>
+                              
+                            </div>
+                            <p>
+                               Dungeon Survivor is a game designed using Java Script. It is a math game.
+                               It is a game where we have to answer questions to win.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://youtu.be/-AS_ctTVqHs" class="link-button" target="_blank"><i class="fas fa-desktop"></i> View Video</a>
+                                <a href="https://drive.google.com/file/d/1f5Q3j-y4chX4n-i4-GcYTrjGTkrsewdA/view?usp=sharing" class="link-github" target="_blank"><i class="fas fa-download"></i> drive</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>

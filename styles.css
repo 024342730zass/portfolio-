@@ -1,0 +1,726 @@
+/* ==================================================== */
+/* 0. DISCORD COLOR PALETTE & GLOBAL VARS */
+/* ==================================================== */
+:root {
+    /* Discord Color Palette */
+    --discord-bg-primary: #36393f; /* พื้นหลังหลัก */
+    --discord-bg-secondary: #2f3136; /* พื้นหลังรอง/โฮเวอร์ */
+    --discord-bg-tertiary: #202225; /* พื้นหลังเข้ม/แชนเนลลิสต์ */
+    --discord-blur-bg: rgba(47, 49, 54, 0.7); /* พื้นหลังโปร่งแสง (Mica) */
+    --text-color: #dcddde; /* ข้อความหลัก */
+    --discord-text-normal: #dcddde;
+    --discord-text-muted: #b9bbbe; /* ข้อความรอง */
+    --brand-color-blurple: #5865f2; /* สีม่วง Discord */
+    --brand-color-green: #3ba55d; /* สีเขียว (ใช้สำหรับวันที่/Active) */
+    --timeline-line-color: #4f545c; /* สีเส้นไทม์ไลน์ */
+}
+
+/* ==================================================== */
+/* 🌟 GLOBAL KEYFRAME ANIMATIONS 🌟 */
+/* ==================================================== */
+
+/* Animation 1: Fade In & Scale Up (สำหรับ Card/Grid หลัก) */
+@keyframes fadeInScaleUp {
+    0% {
+        opacity: 0;
+        transform: scale(0.98) translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Animation 2: Fade In & Slide Down (สำหรับ Navbar) */
+@keyframes fadeInSlideDown {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* Animation 3: Dot Pulse (สำหรับสถานะ Active) */
+@keyframes dot-pulse {
+    0%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+        box-shadow: 0 0 4px var(--brand-color-green);
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+        box-shadow: 0 0 8px var(--brand-color-green), 0 0 15px rgba(59, 165, 93, 0.5); 
+    }
+}
+
+/* Animation 4: Slide In From Left (สำหรับ Timeline Items) */
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ==================================================== */
+/* 1. Global & Background Setup (รวมและปรับปรุง) */
+/* ==================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* เพิ่ม Global Transition เพื่อความสมูท */
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+body, html {
+    min-height: 100vh;
+    font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+    color: var(--text-color);
+    background-color: transparent; 
+    overflow-x: hidden; 
+    
+    /* ลบการจัดกึ่งกลางออกจาก body เพื่อให้หน้ารองรับ Scroll */
+    padding-top: 80px; /* เพิ่มช่องว่างด้านบนเผื่อ Navbar */
+}
+
+a {
+    text-decoration: none;
+    color: var(--discord-text-normal);
+}
+
+/* Global Container (ใช้สำหรับ About, Experience/Education) */
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Wrapper สำหรับจัดกึ่งกลางเฉพาะหน้า Home (ต้องใช้ใน HTML) */
+.home-page-wrapper {
+    height: calc(100vh - 80px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -80px; /* ชดเชย padding-top ของ body เพื่อจัดกึ่งกลางเต็มจอ */
+}
+
+/* ภาพ/วิดีโอพื้นหลัง */
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 10;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    opacity: 0.75; 
+    filter: brightness(0.7);
+}
+
+/* ---------------------------------------------------- */
+/* 2. Scroll Indicator */
+/* ---------------------------------------------------- */
+.scroll-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--discord-bg-tertiary);
+    z-index: 1000;
+}
+
+.scroll-progress {
+    height: 100%;
+    width: 0%;
+    background-color: var(--brand-color-blurple);
+    transition: width 0.1s;
+}
+
+/* ---------------------------------------------------- */
+/* 3. Navigation Bar (Dynamic Island Navbar) */
+/* ---------------------------------------------------- */
+/* รวม .navbar และ .discord-navbar */
+/* ---------------------------------------------------- */
+        /* 2. Navigation Bar (discord-navbar) */
+        /* ---------------------------------------------------- */
+        .discord-navbar {
+            position: fixed; 
+            top: 25px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto; 
+            display: flex;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: var(--discord-blur-bg); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+ opacity: 0;
+    animation: fadeInSlideDown 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+        }
+
+        .nav-item {
+            color: var(--discord-text-muted);
+            font-weight: 500;
+            padding: 10px 18px; 
+            font-size: 1.1rem; 
+            margin: 0 2px;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+        }
+.nav-item.active { /* สไตล์สำหรับ Nav Item ที่กำลัง Active */
+            background-color: var(--discord-bg-primary); 
+            color: var(--discord-text-normal);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+/* ---------------------------------------------------- */
+/* 4. Window Controls (ย่อ/ขยาย/ปิด) */
+/* ---------------------------------------------------- */
+.window-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+.control-button {
+    width: 18px; 
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s, background-color 0.2s;
+}
+
+.control-button:hover {
+    opacity: 1;
+}
+
+.control-button svg {
+    display: block;
+    width: 12px; 
+    height: 12px;
+    fill: var(--text-color);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.window-controls:hover .control-button svg {
+    opacity: 1;
+}
+
+.minimize { background-color: #faa81a; } 
+.maximize { background-color: #43b581; } 
+.close { background-color: #f04747; } 
+.close:hover { background-color: #d13d3d; } 
+
+
+/* ---------------------------------------------------- */
+/* 5. Profile Card (Window) - Home Page */
+/* ---------------------------------------------------- */
+.profile-card {
+    width: 90%;
+    max-width: 800px; 
+    padding: 40px 60px 60px; 
+    border-radius: 12px;
+    
+    /* Fluent/Mica Effect */
+    background-color: var(--discord-blur-bg); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    
+    /* Border & Shadow */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    
+    text-align: center;
+    position: relative;
+    
+    /* ⭐ ANIMATION: เข้ามาพร้อมขยายขนาด ⭐ */
+    opacity: 0; 
+    animation: fadeInScaleUp 0.8s ease-out 0.2s forwards; 
+    margin: auto; 
+}
+
+.avatar-area-with-icons {
+    margin: 50px auto; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    gap: 20px; 
+}
+
+/* 🌟 จุดสามจุดคั่น 🌟 */
+.separator-dots-in-card {
+    display: flex;
+    align-items: center;
+    gap: 4px; 
+}
+
+.separator-dots-in-card .dot {
+    display: block;
+    width: 8px; 
+    height: 8px;
+    border-radius: 50%;
+}
+/* 🌟 ไอคอน/รูปภาพส่วนตัว (Placeholder - สีม่วงกลม) 🌟 */
+.nav-icon-item.custom-image-placeholder {
+    background-color: var(--brand-color-blurple); 
+    width: 100px; 
+    height: 100px;
+    border-radius: 50%;
+}
+/* 🌟 แอนิเมชันไฟสีเขียวขยับทีละจุด 🌟 */
+.separator-dots-in-card .pulse-animation {
+    background-color: var(--brand-color-green) !important; 
+    box-shadow: 0 0 4px var(--brand-color-green);
+    animation: dot-pulse 1.2s infinite ease-in-out; 
+}
+.separator-dots-in-card .dot:nth-child(2).pulse-animation {
+    animation-delay: 0.2s; 
+}
+.separator-dots-in-card .dot:nth-child(3).pulse-animation {
+    animation-delay: 0.4s;
+}
+
+/* 🌟 Avatar หลัก (ขนาดใหญ่) 🌟 */
+.nav-icon-item.profile-placeholder-main {
+    width: 140px; 
+    height: 140px;
+    border-radius: 50%;
+    background-color: var(--discord-bg-tertiary);
+}
+
+.nav-icon-item.profile-placeholder-main .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 6px solid #5865f2;
+
+    box-shadow: 0 0 0 5px var(--brand-color-blurple); 
+    transition: transform 0.3s ease-out;
+}
+
+.nav-icon-item.profile-placeholder-main .avatar-img:hover {
+    transform: scale(1.05);
+}
+
+/* ---------------------------------------------------- */
+/* 🌟 ปุ่ม "Go" (Action Button) 🌟 */
+/* ---------------------------------------------------- */
+.action-button {
+    background-color: var(--brand-color-blurple); 
+    color: var(--discord-text-normal);
+    
+    font-size: 1.3rem; 
+    font-weight: 700;
+    padding: 10px 55px; 
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    
+    margin-top: 35px; 
+    margin-bottom: 25px; 
+    
+    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4); 
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+.action-button:hover {
+    background-color: #4f5bcf; 
+    box-shadow: 0 6px 20px rgba(88, 101, 242, 0.6); 
+}
+
+.action-button:active {
+    transform: scale(0.98);
+}
+
+
+/* ---------------------------------------------------- */
+/* 6. Content (ชื่อและคำอธิบาย) */
+/* ---------------------------------------------------- */
+.username {
+    font-size: 2.5rem; 
+    font-weight: 800;
+    margin-top: 20px; 
+    margin-bottom: 10px;
+    color: var(--discord-text-normal);
+}
+
+h2 {
+    font-size: 1.1rem; 
+    font-weight: 400;
+    color: var(--discord-text-muted);
+    line-height: 1.5;
+    max-width: 650px;
+    margin: 15px auto 30px; 
+}
+
+/* ---------------------------------------------------- */
+/* 7. Social Links (Icons ล่างสุด) */
+/* ---------------------------------------------------- */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 25px; 
+    margin-top: 40px
+}
+
+.social-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--discord-bg-tertiary);
+    color: var(--discord-text-muted);
+    font-size: 1.5rem; 
+    text-decoration: none;
+    position: relative;
+    transition: background-color 0.2s, color 0.2s, transform 0.3s;
+}
+
+.social-icon:hover {
+    background-color: var(--brand-color-blurple);
+    color: var(--discord-text-normal);
+    transform: scale(1.1);
+}
+
+.social-icon img {
+    width: 28px !important; 
+    height: 28px !important;
+    border-radius: 50%;
+}
+
+/* 8. Tooltip สำหรับ Copy (Discord) */
+.copy-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background-color: var(--discord-bg-tertiary);
+    color: var(--discord-text-normal);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem; 
+    white-space: nowrap;
+    z-index: 20;
+    opacity: 1;
+    pointer-events: none;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: var(--discord-bg-tertiary) transparent transparent transparent;
+    }
+}
+
+/* ---------------------------------------------------- */
+/* 9. About Section Styles */
+/* ---------------------------------------------------- */
+
+#about {
+    padding: 150px 0 100px; /* เพิ่ม padding บนเพื่อให้พ้น Navbar */
+    min-height: calc(100vh - 250px); /* ให้มีขนาดอย่างน้อยเต็มจอ */
+
+    /* ⭐ ANIMATION: เข้ามาพร้อมขยายขนาด ⭐ */
+    opacity: 0; 
+    animation: fadeInScaleUp 0.8s ease-out 0.2s forwards; 
+}
+
+.about-content {
+    display: flex;
+    flex-direction: row; 
+    gap: 40px;
+    align-items: flex-start; 
+    
+    /* สไตล์แบบ Discord/Mica */
+    background-color: var(--discord-blur-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.about-text {
+    flex: 2; 
+    text-align: left;
+}
+
+.about-text h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--brand-color-blurple);
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--discord-bg-secondary);
+    padding-bottom: 5px;
+}
+
+.about-text p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    color: var(--discord-text-muted);
+}
+
+/* 🌟 Skills Tag 🌟 */
+.skills {
+    margin-top: 40px; /* แก้ไขค่า margin-top ให้สมเหตุสมผล */
+}
+
+.skill-tag {
+    display: inline-block;
+    background-color: var(--discord-bg-tertiary);
+    color: var(--brand-color-green); 
+    padding: 6px 12px;
+    margin: 5px 5px 5px 0;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 1px solid var(--brand-color-green);
+    transition: background-color 0.2s;
+}
+
+.skill-tag:hover {
+    background-color: var(--brand-color-green);
+    color: var(--discord-bg-primary);
+}
+
+/* 🌟 About Image 🌟 */
+.about-image {
+    flex: 1; 
+    min-width: 250px;
+    text-align: center;
+    padding: 20px;
+    background-color: var(--discord-bg-secondary);
+    border-radius: 12px;
+}
+
+.about-image img {
+    width: 100%;
+    max-width: 250px; 
+    height: auto;
+    border-radius: 50%;
+    border: 5px solid var(--brand-color-blurple);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    
+    /* ปรับตำแหน่งอวาตาร์โดยใช้ Margin */
+    margin-top: 2px; 
+    margin-bottom: 40px;
+    margin-left: 45px; 
+    margin-right: auto; 
+}
+
+
+/* ---------------------------------------------------- */
+/* 10. Footer Styles (เพื่อให้เข้ากับ Discord Theme) - (ยังไม่มีโค้ด) */
+/* ---------------------------------------------------- */
+
+
+/* ---------------------------------------------------- */
+/* 11. Responsive Design */
+/* ---------------------------------------------------- */
+@media (max-width: 900px) {
+    .about-content {
+        flex-direction: column; 
+        align-items: center;
+    }
+    
+    .about-image {
+        order: -1; 
+        min-width: auto;
+    }
+    .exp-edu-grid {
+        grid-template-columns: 1fr; /* เปลี่ยนเป็น 1 คอลัมน์ */
+    }
+    .exp-edu-column {
+        border-right: none;
+        padding-right: 0;
+        padding-left: 0 !important;
+    }
+}
+
+
+/* ==================================================== */
+/* 12. EXPERIENCE & EDUCATION STYLES (Discord Channel Style) */
+/* ==================================================== */
+
+/* Container แบบ Window */
+#experience-education {
+    width: 90%;
+    max-width: 1200px; 
+    /* ลบ height: 85vh; ออกเพื่อให้เนื้อหาเกินได้และ Scroll ได้ (ถ้าใช้ในหน้าแยก) */
+    min-height: 85vh; /* ตั้งค่าขั้นต่ำแทน */
+    margin-top: 100px; 
+    padding: 0; 
+    
+    border-radius: 12px;
+    
+    /* Mica Effect */
+    background-color: var(--discord-blur-bg); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    
+    position: relative;
+    /* ⭐ ANIMATION: เข้ามาพร้อมขยายขนาด ⭐ */
+    opacity: 0; 
+    animation: fadeInScaleUp 0.8s ease-out 0.2s forwards; 
+    margin: 100px auto 100px; /* จัดให้อยู่ตรงกลางของพื้นที่ที่เหลือ */
+}
+
+.exp-edu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 40px;
+    
+    /* กรอบหลัก Mica Effect คลุม 2 คอลัมน์ (ยกเลิกเพื่อใช้ #experience-education) */
+    background-color: transparent; 
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    
+    border-radius: 12px;
+    padding: 40px;
+}
+
+.exp-edu-column {
+    padding-right: 20px;
+    border-right: 1px solid var(--discord-bg-secondary); 
+}
+
+/* ลบเส้นแบ่งออกจากคอลัมน์สุดท้าย */
+.exp-edu-grid .exp-edu-column:last-child {
+    border-right: none;
+    padding-right: 0;
+    padding-left: 20px;
+}
+
+.experience-content h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--brand-color-blurple);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--discord-bg-secondary);
+    padding-bottom: 5px;
+}
+
+/* ---------------------------------------------------- */
+/* 5. Timeline Styles (ในรูปแบบข้อความแชท) */
+/* ---------------------------------------------------- */
+.timeline {
+    position: relative;
+    padding-left: 40px; 
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0; 
+    width: 2px;
+    height: 100%;
+    background-color: var(--timeline-line-color); 
+}
+
+.timeline-item {
+    margin-bottom: 40px;
+    position: relative;
+    background-color: var(--discord-bg-primary); 
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--brand-color-green); /* ใช้สีเขียวสำหรับ Experience */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    /* ⭐ ANIMATION: Slide In จากด้านซ้าย ⭐ */
+    opacity: 0; 
+    animation: slideInFromLeft 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+/* 🌟 Animation Delay สำหรับ Timeline Items (ต้องใช้ nth-child ใน HTML) 🌟 */
+/* โค้ดนี้จะใช้กับทุก .timeline-item ที่มีใน HTML ตามลำดับ */
+.timeline-item:nth-child(1) { animation-delay: 0.5s; } 
+.timeline-item:nth-child(2) { animation-delay: 0.7s; }
+.timeline-item:nth-child(3) { animation-delay: 0.9s; }
+.timeline-item:nth-child(4) { animation-delay: 1.1s; }
+.timeline-item:nth-child(5) { animation-delay: 1.3s; }
+
+.education-timeline .timeline-item {
+    border-left: 4px solid var(--brand-color-blurple); /* ใช้สีม่วงสำหรับ Education */
+}
+
+
+/* 🌟 Icon/Avatar ข้างข้อความแชท (จุดบนเส้นเวลา) 🌟 */
+.timeline-item::before {
+    content: '💼'; /* Icon เริ่มต้นสำหรับ Experience */
+    position: absolute;
+    left: -40px; 
+    top: 15px; 
+    width: 25px;
+    height: 25px;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 25px;
+    background-color: var(--discord-blur-bg); 
+    border-radius: 50%;
+    padding: 3px;
+    z-index: 10;
+    transform: translateX(-50%);
+    border: 3px solid var(--discord-bg-primary);
+}
+
+.education-timeline .timeline-item::before {
+    content: '🎓'; /* Icon สำหรับ Education */
+}
+
+.timeline-item h3 {
+    font-size: 1.3rem;
+    color: var(--discord-text-normal); 
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.timeline-item .date {
+    font-size: 0.9rem;
+    color: var(--discord-text-muted); 
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.timeline-item p {
+    font-size: 1rem;
+    color: var(--discord-text-muted);
+    line-height: 1.5;
+}

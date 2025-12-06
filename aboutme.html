@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Korakot's Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ==================================================== */
+        /* 0. DISCORD COLOR PALETTE & GLOBAL VARS */
+        /* ==================================================== */
+        :root {
+            --discord-bg-primary: #36393f;
+            --discord-bg-secondary: #2f3136;
+            --discord-bg-tertiary: #202225;
+            --discord-blur-bg: rgba(47, 49, 54, 0.75);
+            --text-color: #dcddde;
+            --discord-text-normal: #dcddde;
+            --discord-text-muted: #b9bbbe;
+            --brand-color-blurple: #5865f2;
+            --brand-color-green: #3ba55d;
+            --discord-header-bg: #e2b2f0;
+            --nitro-bg-dark: #3e3d40;
+        }
+
+        /* ==================================================== */
+        /* 🌟 GLOBAL KEYFRAME ANIMATIONS 🌟 */
+        /* ==================================================== */
+
+        /* Animation 1: Fade In & Scale Up (สำหรับเนื้อหาหลัก) */
+        @keyframes fadeInScaleUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.98) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Animation 2: Fade In & Slide Down (สำหรับ Navbar) */
+        @keyframes fadeInSlideDown {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+
+        /* ---------------------------------------------------- */
+        /* 1. Global & Background Setup */
+        /* ---------------------------------------------------- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            /* เพิ่ม Global Transition เพื่อความสมูทของ hover */
+            transition: color 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        body,
+        html {
+            min-height: 100vh;
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+            color: var(--text-color);
+            background-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* 💡 สำหรับเนื้อหาหลัก ต้องมี padding ด้านบน เพื่อหลีกเลี่ยง Navbar */
+        .window-wrapper {
+            min-height: 100vh;
+            padding-top: 80px; /* ปรับให้เนื้อหาเริ่มต่ำกว่า Navbar */
+        }
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.75;
+            filter: brightness(0.7);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ---------------------------------------------------- */
+        /* 2. Navigation Bar (discord-navbar) - Dynamic Island Style */
+        /* ---------------------------------------------------- */
+        .discord-navbar {
+            /* 🌟 FIXED POSITION ที่ถูกต้อง 🌟 */
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            display: flex;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 20px;
+            
+            /* Mica/Blur Effect */
+            background-color: var(--discord-blur-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            
+            /* Animation */
+            opacity: 0; 
+            animation: fadeInSlideDown 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s forwards;
+        }
+
+        .nav-item {
+            color: var(--discord-text-muted);
+            font-weight: 500;
+            padding: 10px 18px;
+            font-size: 1.1rem;
+            margin: 0 2px;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--discord-bg-secondary);
+            color: var(--discord-text-normal);
+        }
+        
+        .nav-item.active {
+            background-color: var(--discord-bg-tertiary);
+            color: var(--discord-text-normal);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+
+        /* ---------------------------------------------------- */
+        /* 3. About Section Styles (เนื้อหาหลัก) */
+        /* ---------------------------------------------------- */
+        #about {
+            padding: 50px 0 100px;
+            min-height: 100vh;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            align-items: flex-start;
+
+            background-color: var(--discord-blur-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            
+            /* ⭐ เพิ่ม Animation ตรงนี้ ⭐ */
+            opacity: 0; /* ซ่อนไว้ก่อน */
+            animation: fadeInScaleUp 0.8s ease-out 0.4s forwards; /* เล่น animation */
+        }
+
+        .about-text {
+            flex: 2.5;
+            text-align: left;
+        }
+
+        .about-text h2 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: var(--brand-color-blurple);
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--discord-bg-secondary);
+            padding-bottom: 5px;
+        }
+
+        .about-text p {
+            font-size: 1.5rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: var(--discord-text-muted);
+        }
+
+        /* 4. Skills Tag */
+        .skills {
+            margin-top: 25px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background-color: var(--discord-bg-tertiary);
+            color: var(--brand-color-green);
+            padding: 6px 12px;
+            margin: 5px 5px 5px 0;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1px solid var(--brand-color-green);
+            transition: background-color 0.2s;
+        }
+
+        .skill-tag:hover {
+            background-color: var(--brand-color-green);
+            color: var(--discord-bg-primary);
+        }
+
+        /* ==================================================== */
+        /* 5. DISCORD PROFILE CARD NEW STYLES */
+        /* ==================================================== */
+        .discord-profile-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 380px;
+            background-color: var(--discord-bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            /* ตั้งค่าให้ Profile Card ไม่รับ Animation เพื่อให้เนื้อหาหลักโดดเด่น */
+        }
+
+        /* (โค้ด Discord Profile Card ส่วนที่เหลือ...) */
+        .card-header { height: 90px; background-color: var(--discord-header-bg); position: relative; }
+        .card-header .top-status { position: absolute; top: 15px; right: 10px; display: flex; align-items: center; background-color: rgba(0, 0, 0, 0.3); border-radius: 4px; padding: 3px 8px; font-size: 0.85rem; font-weight: 600; color: white; }
+        .avatar-container { margin-top: -55px; padding-left: 16px; position: relative; z-index: 10; }
+        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; border: 6px solid var(--discord-bg-secondary); object-fit: cover; }
+        .user-info { padding: 8px 16px 16px 16px; background-color: var(--discord-bg-tertiary); margin-top: -8px; padding-top: 16px; border-bottom: 1px solid var(--discord-bg-primary); }
+        .username { font-size: 1.4rem; font-weight: 700; margin: 0 0 4px 0; color: var(--discord-text-normal); }
+        .tag-id { font-size: 0.9rem; color: var(--discord-text-muted); margin: 0 0 8px 0; display: flex; align-items: center; }
+        .badge { background-color: #5a3c69; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: #fff; margin-left: 8px; }
+        .bio-text-group { display: flex; flex-wrap: wrap; margin: 10px 0 5px 0; }
+        .bio-link-label { color: var(--discord-text-muted); font-weight: 500; margin-right: 5px; }
+        .external-link { display: inline; color: #4a90e2; text-decoration: none; font-size: 0.9rem; font-weight: 500; word-break: break-all; }
+        .bio-text { font-size: 0.9rem; color: var(--discord-text-normal); margin: 5px 0; line-height: 1.4; }
+        .game-collection { padding: 10px 16px; border-bottom: 1px solid var(--discord-bg-primary); }
+        .game-collection p { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; color: var(--discord-text-muted); margin-bottom: 10px; }
+        .game-icon { font-size: 2.5rem; margin-right: 10px; display: inline-block; }
+        .nitro-section { background-color: var(--nitro-bg-dark); padding: 15px 16px; margin: 15px; border-radius: 8px; border: 1px solid #4a494d; position: relative; }
+        .nitro-buttons { display: flex; gap: 10px; margin-top: 5px; }
+        .nitro-btn, .shop-btn { border: none; padding: 8px 12px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: background-color 0.2s; display: inline-flex; align-items: center; }
+        .nitro-btn { background-color: var(--brand-color-blurple); color: #fff; }
+        .shop-btn { background-color: var(--discord-bg-primary); color: var(--discord-text-normal); }
+        .settings-menu { list-style: none; padding: 0; margin: 10px 0 15px 0; }
+        .settings-menu li { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; font-size: 1rem; color: var(--discord-text-normal); cursor: pointer; border-radius: 4px; font-weight: 500; transition: background-color 0.2s; }
+        .settings-menu li:hover { background-color: var(--discord-bg-primary); }
+        .settings-menu .menu-item-content { display: flex; align-items: center; }
+        .settings-menu li i { margin-right: 0; font-size: 1.1rem; }
+        .settings-menu .menu-item-content i:first-child { width: 20px; text-align: center; margin-right: 12px; }
+        .settings-menu li i:last-child { margin-left: auto; flex-shrink: 0; }
+        .settings-menu .menu-divider { height: 1px; background-color: var(--discord-bg-primary); margin: 5px 0; }
+
+        /* ---------------------------------------------------- */
+        /* 6. Responsive Design */
+        /* ---------------------------------------------------- */
+        @media (max-width: 900px) {
+            .about-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .discord-profile-card {
+                order: -1;
+                margin-bottom: 20px;
+                min-width: 90%;
+            }
+
+            .about-text {
+                order: 0;
+                padding-top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <img id="video-background" class="background-image" src="pic/background.jpg" alt="Background Image">
+
+    <nav class="discord-navbar">
+        <div class="nav-left-items">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="aboutme.html" class="nav-item active">About</a> <a href="education.html" class="nav-item">Education</a>
+            <a href="project.html" class="nav-item">Projects</a>
+        </div>
+    </nav>
+
+    <div class="window-wrapper">
+        <section id="about">
+            <div class="container">
+                <div class="about-content">
+
+                    <div class="about-text">
+                        <h2>About Me</h2>
+                        <p>
+                            Hello, my name is Korakot, nickname is Kan. I'm currently a third-year student at Rajamangala University of Technology Phra Nakhon. 
+                            I'm excited to begin my internship as a programmer. My interests lie in cybersecurity.
+                        </p>
+                        <p>
+                            I have a programming background in Java, C++, and tools like Figma. During my studies, I've worked on projects, 
+                            website development and game creation. I'm constantly learning new things and am committed to improving my skills
+                        </p>
+                        <div class="skills">
+                            <span class="skill-tag">HTML/CSS</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">C++</span>
+                        </div>
+                    </div>
+
+                    <div class="discord-profile-card">
+                        <div class="card-header">
+                            <div class="top-status"><i class="fas fa-plus-circle"></i> เมนูอะไรที่คุณอยากทานตอนนี้</div>
+                            <i class="fas fa-ellipsis-v menu-icon"></i>
+                        </div>
+
+                        <div class="avatar-container">
+                            <img class="profile-avatar" src="pic/avatar.jpg" alt="Profile Avatar">
+                        </div>
+
+                        <div class="user-info">
+                            <h2 class="username">นายกาน</h2>
+                            <p class="tag-id">
+                                anju0233
+                                <span class="badge">Cyber</span>
+                                <i class="fas fa-heart" style="color: #ed4245;"></i> <i class="fas fa-hashtag"
+                                    style="color: #43b581;"></i> <i class="fas fa-cog" style="color: #b9bbbe;"></i>
+                            </p>
+                            <p class="bio-text-group">
+                                <span class="bio-link-label">👇 my profile 👇</span>
+                                <a href="https://024342730zass.github.io/mybio/" target="_blank" class="external-link">
+                                    https://024342730zass.github.io/mybio/
+                                </a>
+                            </p>
+                            <p class="bio-text">ฉันชื่อ กานต์ ยินดีที่ได้รู้จัก...</p>
+                            <p class="bio-text">ประวัติแบบเต็ม</p>
+                        </div>
+
+                        <div class="game-collection">
+                            <p>Game Collection</p>
+                            <i class="fab fa-battle-net game-icon" style="color: #f7a233;"></i>
+                            <i class="fab fa-dota game-icon" style="color: #f04747;"></i>
+                            <i class="fab fa-steam game-icon" style="color: #171a21;"></i>
+                        </div>
+
+                        <div class="nitro-section">
+                            <p>Add flair to your profile</p>
+                            <div class="nitro-buttons">
+                                <button class="nitro-btn">
+                                    <i class="fas fa-star"></i> Subscrilitro
+                                </button>
+                                <button class="shop-btn">
+                                    <i class="fas fa-store"></i> ร้านค้า
+                                </button>
+                            </div>
+                        </div>
+
+                        <ul class="settings-menu">
+                            <li>
+                                <span class="menu-item-content">
+                                    <i class="fas fa-pencil-alt"></i> แก้ไขโปรไฟล์
+                                </span>
+                            </li>
+                            <li>
+                                <span class="menu-item-content">
+                                    <i class="fas fa-minus-circle"></i>
+                                    ไม่ระบุ
+                                    <span style="color: #f04747; font-weight: 700; margin-left: 5px;">❗️</span>
+                                </span>
+                                <i class="fas fa-chevron-right" style="color: var(--discord-text-muted);"></i>
+                            </li>
+                            <li class="menu-divider"></li>
+                            <li>
+                                <span class="menu-item-content">
+                                    <i class="fas fa-user-circle"></i> สลับบัญชี
+                                </span>
+                                <i class="fas fa-chevron-right" style="color: var(--discord-text-muted);"></i>
+                            </li>
+                            <li>
+                                <span class="menu-item-content">
+                                    <i class="fas fa-id-card"></i> คัดลอก ID ผู้ใช้
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.discord-navbar .nav-item');
+            
+            // ดึงชื่อไฟล์ปัจจุบัน (เช่น 'aboutme.html')
+            let currentPath = window.location.pathname.split('/').pop();
+
+            // จัดการกรณีที่อยู่หน้าหลัก (เช่น index.html หรือ root path)
+            if (!currentPath || currentPath === 'index.html') {
+                currentPath = 'index.html';
+            }
+
+            // ตั้งค่า Active Class
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                const itemHref = item.getAttribute('href');
+                
+                if (itemHref === currentPath) {
+                    item.classList.add('active'); // เพิ่มคลาส active ให้รายการที่ตรงกัน
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
